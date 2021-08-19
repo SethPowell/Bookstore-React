@@ -10,14 +10,15 @@ export default class App extends Component {
     super();
 
     this.state={
-      bookdata: []
+      data: []
     }
   }
 
   componentDidMount() {
     fetch("http://127.0.0.1:5000/book/get")
     .then(response => response.json())
-    .then(data => this.setState({bookdata: data}))
+    .then(data => this.setState({ data }))
+    .catch(error => console.log("Error fetching books", error))
   }
 
   render() {
@@ -26,7 +27,7 @@ export default class App extends Component {
         <div className='app'>
           <Navbar />
           <Switch>
-            <Route exact path='/' component={BooksWrapper} />
+            <Route exact path='/' render={(props) => <BooksWrapper data={this.state.data} {...props}/>} />
             <Route path="/add-book" component={AddBook} />
           </Switch>
         </div>
